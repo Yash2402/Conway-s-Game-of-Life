@@ -1,7 +1,2 @@
-# Conway-s-Game-of-Life
-It is based on Pygame library
-## Requirement:
 
-```bash
-pip install pygame
-```
+[README.md](https://github.com/Yash2402/Conway-s-Game-of-Life/files/12136794/README.md)
