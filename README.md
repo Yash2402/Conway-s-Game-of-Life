@@ -69,7 +69,5 @@ To learn more about Conway's Game of Life, you can check out the following resou
 This project is licensed under the [MIT License](LICENSE). Feel free to use and modify it as you like!
 
 Enjoy the mesmerizing world of Conway's Game of Life!
-## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
