@@ -48,7 +48,7 @@ You can modify various aspects of the Game of Life to experiment with different 
 Here are a few examples of well-known patterns in Conway's Game of Life:
 
 - **Glider:** A pattern that moves diagonally across the grid.
-   - ![App Screenshot]((https://github.com/Yash2402/Conway-s-Game-of-Life/blob/main/Glider.png))
+   - ![App Screenshot](https://github.com/Yash2402/Conway-s-Game-of-Life/blob/main/Glider.png)
 - **Gosper Glider Gun:** A pattern that produces gliders periodically.
 
 ## Notes
