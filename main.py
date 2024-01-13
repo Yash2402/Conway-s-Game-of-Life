@@ -31,11 +31,11 @@ def countNeighbours(currgen, x, y):
     return sum
 
 
-screen = pygame.display.set_mode((1024, 1024),pygame.RESIZABLE)
+screen = pygame.display.set_mode((0, 0),pygame.RESIZABLE)
 pygame.display.set_caption("Conway's Game Of Life")
-radius = 8
-gridx = int(((screen.get_width()/(2*radius))/2)*2)
-gridy = int(((screen.get_height()/(2*radius))/2)*2)
+width = 16
+gridx = screen.get_width()//width
+gridy = screen.get_height()//width
 
 run = True
 currgen = np.zeros((gridx, gridy))
@@ -46,20 +46,20 @@ tick = pygame.time.Clock()
 
 while run:
     pygame.display.flip()
-    tick.tick(120)
+    tick.tick(30)
     screen.fill((24, 24, 24))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if pygame.mouse.get_pressed()[0]:
             mousepos = pygame.mouse.get_pos()
-            i = int(mousepos[0]/(2*radius))
-            j = int(mousepos[1]/(2*radius))
+            i = mousepos[0]//width
+            j = mousepos[1]//width
             currgen[i][j] = 1
         if pygame.mouse.get_pressed()[2]:
             mousepos = pygame.mouse.get_pos()
-            i = int(mousepos[0]/(2*radius))
-            j = int(mousepos[1]/(2*radius))
+            i = mousepos[0]//width
+            j = mousepos[1]//width
             currgen[i][j] = 0
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
@@ -67,20 +67,26 @@ while run:
             if event.key == pygame.K_r:
                 upd = False
                 currgen = np.zeros((gridx, gridy))
-    
-    if upd:        
-        currgen = update(currgen, gridx, gridy)
+
     for i in range(gridx):
         for j in range(gridy):
             if currgen[i][j]:
-                color1 = (255, 255, 255)
-                color2 = (255, 0, 0)
+                # color1 = (150, 150, 150)
+                prev_color = (160, 160, 160)
             else:
-                color1 = (0, 0, 0)
-                color2 = (0, 0, 0)
-            pygame.draw.rect(screen, color1, (i*2*radius + 1, j*2*radius + 1, 2*radius-1, 2*radius-1), width=2)
-            # pygame.draw.circle(screen, color, (i*2*radius + radius + 1, j*2*radius + radius + 1), radius)
-
+                prev_color = (0, 0, 0)
+            pygame.draw.rect(screen, prev_color, (i*width + 1, j*width + 1, width-1, width-1), 3)
+    
+    if upd:        
+        currgen = update(currgen, gridx, gridy)
+    
+    for i in range(gridx):
+        for j in range(gridy):
+            if currgen[i][j]:
+                color = (255, 255, 255)
+            else:
+                color = (0, 0, 0)
+            pygame.draw.rect(screen, color, (i*width + 1, j*width + 1, width-1, width-1), 2)
     pygame.display.update()
 
 
