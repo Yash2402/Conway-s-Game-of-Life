@@ -1,9 +1,10 @@
 import random
+
 import numpy as np
 import pygame
 
-
 pygame.init()
+
 
 def update(currgen, gridx, gridy):
     next = np.zeros((gridx, gridy))
@@ -14,11 +15,11 @@ def update(currgen, gridx, gridy):
             if state == 0 and aliveneigh == 3:
                 next[i][j] = 1
             elif state == 1 and (aliveneigh < 2 or aliveneigh > 3):
-                next[i][j] = 0 
+                next[i][j] = 0
             else:
                 next[i][j] = state
     return next
-                
+
 
 def countNeighbours(currgen, x, y):
     sum = 0
@@ -31,11 +32,30 @@ def countNeighbours(currgen, x, y):
     return sum
 
 
-screen = pygame.display.set_mode((1024, 1024),pygame.RESIZABLE)
+def drawGrid(screen, currgen, color):
+    for i in range(gridx):
+        for j in range(gridy):
+            if currgen[i][j]:
+                pygame.draw.rect(
+                    screen,
+                    color,
+                    (i * width + 1, j * width + 1, width - 1, width - 1),
+                    width=2,
+                )
+            else:
+                pygame.draw.rect(
+                    screen,
+                    (0, 0, 0),
+                    (i * width + 1, j * width + 1, width - 1, width - 1),
+                    width=2,
+                )
+
+
+screen = pygame.display.set_mode((1024, 1024), pygame.RESIZABLE)
 pygame.display.set_caption("Conway's Game Of Life")
-radius = 8
-gridx = int(((screen.get_width()/(2*radius))/2)*2)
-gridy = int(((screen.get_height()/(2*radius))/2)*2)
+width = 16
+gridx = screen.get_width() // width
+gridy = screen.get_height() // width
 
 run = True
 currgen = np.zeros((gridx, gridy))
@@ -53,13 +73,13 @@ while run:
             run = False
         if pygame.mouse.get_pressed()[0]:
             mousepos = pygame.mouse.get_pos()
-            i = int(mousepos[0]/(2*radius))
-            j = int(mousepos[1]/(2*radius))
+            i = mousepos[0] // width
+            j = mousepos[1] // width
             currgen[i][j] = 1
         if pygame.mouse.get_pressed()[2]:
             mousepos = pygame.mouse.get_pos()
-            i = int(mousepos[0]/(2*radius))
-            j = int(mousepos[1]/(2*radius))
+            i = mousepos[0] // width
+            j = mousepos[1] // width
             currgen[i][j] = 0
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
@@ -67,20 +87,12 @@ while run:
             if event.key == pygame.K_r:
                 upd = False
                 currgen = np.zeros((gridx, gridy))
-    
-    if upd:        
+
+    drawGrid(screen, currgen, (128, 128, 128))
+
+    if upd:
         currgen = update(currgen, gridx, gridy)
-    for i in range(gridx):
-        for j in range(gridy):
-            if currgen[i][j]:
-                color1 = (255, 255, 255)
-                color2 = (255, 0, 0)
-            else:
-                color1 = (0, 0, 0)
-                color2 = (0, 0, 0)
-            pygame.draw.rect(screen, color1, (i*2*radius + 1, j*2*radius + 1, 2*radius-1, 2*radius-1), width=2)
-            # pygame.draw.circle(screen, color, (i*2*radius + radius + 1, j*2*radius + radius + 1), radius)
+
+    drawGrid(screen, currgen, (255, 255, 255))
 
     pygame.display.update()
-
-
